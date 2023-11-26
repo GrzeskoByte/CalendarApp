@@ -41,6 +41,11 @@
             this.monthYearLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.eventsList = new System.Windows.Forms.FlowLayoutPanel();
+            this.currentEventDescription = new System.Windows.Forms.Label();
+            this.currentEventTitle = new System.Windows.Forms.Label();
+            this.currentEventDate = new System.Windows.Forms.Label();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // daysContainer
@@ -161,7 +166,7 @@
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(129)))), ((int)(((byte)(173)))));
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(539, 407);
+            this.button1.Location = new System.Drawing.Point(558, 407);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(115, 23);
             this.button1.TabIndex = 14;
@@ -171,12 +176,51 @@
             // 
             // eventsList
             // 
+            this.eventsList.AutoScroll = true;
             this.eventsList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(67)))), ((int)(((byte)(116)))));
             this.eventsList.Location = new System.Drawing.Point(432, 80);
             this.eventsList.Name = "eventsList";
-            this.eventsList.Size = new System.Drawing.Size(222, 321);
+            this.eventsList.Size = new System.Drawing.Size(241, 321);
             this.eventsList.TabIndex = 15;
             this.eventsList.Paint += new System.Windows.Forms.PaintEventHandler(this.eventsList_Paint);
+            // 
+            // currentEventDescription
+            // 
+            this.currentEventDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
+            this.currentEventDescription.ForeColor = System.Drawing.Color.White;
+            this.currentEventDescription.Location = new System.Drawing.Point(3, 41);
+            this.currentEventDescription.Name = "currentEventDescription";
+            this.currentEventDescription.Size = new System.Drawing.Size(237, 100);
+            this.currentEventDescription.TabIndex = 16;
+            // 
+            // currentEventTitle
+            // 
+            this.currentEventTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
+            this.currentEventTitle.ForeColor = System.Drawing.Color.White;
+            this.currentEventTitle.Location = new System.Drawing.Point(3, 0);
+            this.currentEventTitle.Name = "currentEventTitle";
+            this.currentEventTitle.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.currentEventTitle.Size = new System.Drawing.Size(237, 41);
+            this.currentEventTitle.TabIndex = 17;
+            // 
+            // currentEventDate
+            // 
+            this.currentEventDate.ForeColor = System.Drawing.Color.White;
+            this.currentEventDate.Location = new System.Drawing.Point(3, 141);
+            this.currentEventDate.Name = "currentEventDate";
+            this.currentEventDate.Size = new System.Drawing.Size(237, 23);
+            this.currentEventDate.TabIndex = 18;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(67)))), ((int)(((byte)(116)))));
+            this.flowLayoutPanel1.Controls.Add(this.currentEventTitle);
+            this.flowLayoutPanel1.Controls.Add(this.currentEventDescription);
+            this.flowLayoutPanel1.Controls.Add(this.currentEventDate);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(720, 80);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(241, 173);
+            this.flowLayoutPanel1.TabIndex = 19;
             // 
             // Form1
             // 
@@ -184,6 +228,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(195)))), ((int)(((byte)(166)))));
             this.ClientSize = new System.Drawing.Size(1055, 472);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.eventsList);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.monthYearLabel);
@@ -202,6 +247,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,6 +268,10 @@
         private System.Windows.Forms.Label monthYearLabel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.FlowLayoutPanel eventsList;
+        private System.Windows.Forms.Label currentEventDescription;
+        private System.Windows.Forms.Label currentEventTitle;
+        private System.Windows.Forms.Label currentEventDate;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 

@@ -149,12 +149,21 @@ namespace CalendarApp
         {
 
         }
-
+       
+   
         private void button1_Click(object sender, EventArgs e)
         {
             eventForm = new EventForm();
             eventForm.ShowDialog();
         }
+
+        private void setCurrentItem(string title, string description , DateTime date)
+        {
+            currentEventTitle.Text = title;
+            currentEventDescription.Text = description;
+            currentEventDate.Text = date.ToString("yyyy.MM.dd");
+        }
+       
 
         private void Display_Days()
         {
@@ -177,7 +186,7 @@ namespace CalendarApp
 
             for(int i =1; i< daysInTheCurrentMonth; i++)
             {
-                DayControl dayControl = new DayControl(eventsList, month, year);
+                DayControl dayControl = new DayControl(eventsList, month, year , setCurrentItem);
                 dayControl.days(i);
 
                 daysContainer.Controls.Add(dayControl);

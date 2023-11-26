@@ -13,15 +13,25 @@ namespace CalendarApp
     public partial class EventForm : Form
     {
         Event eventToUpdate { get; set; }
+        Action Repaint;
         string action;
-        
+
         public EventForm()
         {
             InitializeComponent();
+            action = "add_blank";
         }
-        public EventForm(Event eventObject)
+        public EventForm(Action Repaint_Component)
         {
             InitializeComponent();
+            Repaint = Repaint_Component;
+            action = "add";
+        }
+
+        public EventForm(Event eventObject ,Action Repaint_Component)
+        {
+            InitializeComponent();
+            Repaint = Repaint_Component;
             eventToUpdate = eventObject;
             action = "update";
         }
@@ -51,6 +61,11 @@ namespace CalendarApp
             EventsDAO eventsDAO = new EventsDAO();
             eventsDAO.AddEvent(title,description, date);
 
+            if(action == "add")
+            {
+                Repaint();
+            }
+
             this.Close();
         }
 
@@ -72,6 +87,8 @@ namespace CalendarApp
             eventToUpdate.date = date;
 
             eventsDAO.UpdateEvent(eventToUpdate);
+            Repaint();
+
             this.Close();
         }
     }

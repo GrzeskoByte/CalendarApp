@@ -94,6 +94,7 @@
             this.Controls.Add(this.removeEventBtn);
             this.Controls.Add(this.eventDesc);
             this.Controls.Add(this.eventTitle);
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Name = "EventControl";
             this.Size = new System.Drawing.Size(215, 80);
             this.Load += new System.EventHandler(this.EventControl_Load);
