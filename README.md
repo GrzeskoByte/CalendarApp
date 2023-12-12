@@ -1,4 +1,5 @@
 # CalendarApp
+!!! [Deprecated] !!!
 
 ## Instalation 
 
