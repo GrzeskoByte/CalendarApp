@@ -8,151 +8,103 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using RestSharp;
 
+using Newtonsoft.Json;
+using System.IO;
+
 namespace CalendarApp
 {
     internal class EventsDAO
-    { 
-
-        private string connString = "server=127.0.0.1; port=3306; user=root; database=calendarapp; password=; convert zero datetime=True;";
-    
+    {
+        private string jsonFilePath = "events.json";
+ 
         public List<Event> GetEventsFromDay(DateTime date)
         {
-
-            List<Event> events = new List<Event>();
-
-            MySqlConnection connection = new MySqlConnection(connString);
-
-            string queryDate = date.ToString("yyyy.MM.dd");
     
-            try{
+            List<Event> events = LoadFromJsonFile(jsonFilePath);
+            List<Event> filteredEvents = events.FindAll(e => e.date.Date == date.Date);
 
-            connection.Open();
-               
-            MySqlCommand command = new MySqlCommand("SELECT * FROM events WHERE date = '"+ queryDate +"';", connection);
-
-            using (MySqlDataReader reader = command.ExecuteReader()){
-                
-                while (reader.Read())
-                {
-                    Event fetchedEvent = new Event
-                    {
-                        id = reader.GetInt32(0),
-                        title = reader.GetString(1),
-                        description = reader.GetString(2),
-                        date = reader.GetDateTime(3),
-                        users_id = reader.GetInt32(4)
-                    };
-
-                    events.Add(fetchedEvent);
-                }
-                    
-            }
-               
-            connection.Close();
-
-            }catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
-            
-            return events;
+            return filteredEvents;
+       
         }
 
         public void AddEvent(string title, string description, DateTime date)
         {
-            MySqlConnection connection = new MySqlConnection(connString);
 
-            string queryDate = date.ToString("yyyy.MM.dd");
+            List<Event> events = LoadFromJsonFile(jsonFilePath);
 
-
-            try
+            events.Add(new Event
             {
+                id  = GetNextEventId(events),
+                title = title,
+                description = description,
+                date = date,
+                users_id = 1,
+            });
 
-                connection.Open();
+            SaveToJsonFile(events, jsonFilePath);
 
-                MySqlCommand command = new MySqlCommand($"INSERT INTO `events`(`id`, `title`, `description`, `date`, `users_id`) VALUES ('','{title}','{description}','{queryDate}','1')", connection);
+        }
 
-                command.ExecuteNonQuery();
-
-                MessageBox.Show("Saved");
-
-                command.Dispose();
-                connection.Close();
-
+        private int GetNextEventId (List<Event> events)
+        {
+            if (events.Count > 0)
+            {
+                return events.Max(e => e.id) + 1;
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                return 1;
             }
-            finally
+        }
+
+        static void SaveToJsonFile(List<Event> data, string filePath)
+        {   
+            string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(filePath, jsonData);
+        }
+
+        static List<Event> LoadFromJsonFile (string filePath)
+        {
+        
+            if (File.Exists(filePath))
             {
-                connection.Close();
+                string jsonData = File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<List<Event>>(jsonData);
+            }else
+            {
+                List<Event> emptyEvent= new List<Event>();
+                SaveToJsonFile(emptyEvent, filePath);
+                return emptyEvent;
             }
         }
 
         public void RemoveEvent(int id)
         {
-            MySqlConnection connection = new MySqlConnection(connString);
+            List<Event> events = LoadFromJsonFile(jsonFilePath);
 
-    
-            try
-            {
+            events.RemoveAll(e => e.id == id);
 
-                connection.Open();
+            SaveToJsonFile(events, jsonFilePath);
 
-                MySqlCommand command = new MySqlCommand($"DELETE FROM events WHERE id={id}", connection);
-
-                command.ExecuteNonQuery();
-
-                MessageBox.Show("Removed");
-
-                command.Dispose();
-                connection.Close();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
+            MessageBox.Show("Removed");
         }
 
         public  void UpdateEvent(Event eventObject)
         {
-            MySqlConnection connection = new MySqlConnection(connString);
+            List<Event> events = LoadFromJsonFile(jsonFilePath);
 
-            string queryDate = eventObject.date.ToString("yyyy.MM.dd");
+   
+            int index = events.FindIndex(e => e.id == eventObject.id);
 
-            try
+            if (index != -1)
             {
-
-                connection.Open();
-
-                MySqlCommand command = new MySqlCommand($"UPDATE `events` SET `title`='{eventObject.title}',`description`='{eventObject.description}',`date`='{queryDate}',`users_id`='1' WHERE id ='{eventObject.id}'", connection);
-              
-                command.ExecuteNonQuery();
-
+                events[index] = eventObject;
+                SaveToJsonFile(events,jsonFilePath);
                 MessageBox.Show("Updated");
-
-                command.Dispose();
-                connection.Close();
-
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
+                MessageBox.Show("Event not found");
             }
         }
-    }
-}
+}}
