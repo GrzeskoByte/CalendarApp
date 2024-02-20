@@ -27,6 +27,38 @@ namespace CalendarApp
        
         }
 
+        public void ExportToCSV()
+        {
+            List<Event> events = LoadFromJsonFile(jsonFilePath);
+            string filePath = "exported_data.csv";
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine("Title,Description,Date,Users_id");
+
+                foreach (Event eventData in events)
+                {
+                    writer.WriteLine($"{eventData.title},{eventData.description},{eventData.date},{eventData.users_id}");
+                }
+
+                MessageBox.Show("Dane zostały pomyślnie wyeksportowane do pliku CSV.", "Eksport zakończony", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.FileName = "exported_data.csv";
+                saveFileDialog.Filter = "Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*)|*.*";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.Copy(filePath, saveFileDialog.FileName, true);
+             
+                }
+            }
+
+
+        }
+
         public void AddEvent(string title, string description, DateTime date)
         {
 

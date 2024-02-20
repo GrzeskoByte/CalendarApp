@@ -20,12 +20,15 @@ namespace CalendarApp
 
         private Action<string, string, DateTime> setCurrentItem;
 
+  
+
         public DayControl(FlowLayoutPanel eventsListRef, int currentMonth, int currentYear, Action<string,string,DateTime> setCurrentItem)
         {
             InitializeComponent();
             eventsList = eventsListRef;
             month = currentMonth; year = currentYear;
             this.setCurrentItem = setCurrentItem;
+       
         }
 
       
@@ -56,8 +59,11 @@ namespace CalendarApp
 
             List<Event> events = eventsDAO.GetEventsFromDay(new DateTime(year, month, day));
 
+            
+
             foreach (Event eventObject in events)
             {
+
                 eventsList.Controls.Add(new EventControl(eventObject, Repaint_EventsList, setCurrentItem));
             }
         }

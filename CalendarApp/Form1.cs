@@ -32,17 +32,7 @@ namespace CalendarApp
 
         private void label1_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
+            
         }
         public static string GetMacAddress()
         {
@@ -126,16 +116,26 @@ namespace CalendarApp
 
             Display_Days();
 
-            
-            
+
+            EventsDAO eventsDAO = new EventsDAO();
+
+            List<Event> events = eventsDAO.GetEventsFromDay(new DateTime(year, month, DateTime.Today.Day));
+
+            if(events.Count > 0)
+            {
+                notifyIcon1.Icon = SystemIcons.Application;
+                notifyIcon1.BalloonTipText = "You have events planned for today !" + "\n" + "Check out the events for  " + DateTime.Today.Date  + " !";
+                notifyIcon1.ShowBalloonTip(1000);
+            }
+
+            this.Resize += new EventHandler(Form1_ResizeBegin);
+
+
+
+
         }
 
         private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void eventsList_Click(object sender, EventArgs e)
         {
 
         }
@@ -164,7 +164,27 @@ namespace CalendarApp
             currentEventDescription.Text = description;
             currentEventDate.Text = date.ToString("yyyy.MM.dd");
         }
-       
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void Form1_ResizeBegin(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                notifyIcon1.Icon = SystemIcons.Application;
+                notifyIcon1.BalloonTipText = "Your callendar has been minimized.";
+                notifyIcon1.ShowBalloonTip(1000);
+            }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            EventsDAO eventsDAO = new EventsDAO();
+            eventsDAO.ExportToCSV();
+        }
 
         private void Display_Days()
         {
