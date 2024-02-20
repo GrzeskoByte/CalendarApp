@@ -57,9 +57,22 @@ namespace CalendarApp
             string title = addEventTitleTextBox.Text;
             string description = addEventDescriptionTextBox.Text;
             DateTime date = addEventDateTimePicker.Value;
+            DayOfWeek dayOfTheWeek = date.DayOfWeek;
+
+
 
             EventsDAO eventsDAO = new EventsDAO();
+
             eventsDAO.AddEvent(title,description, date);
+
+            if (checkBox1.Checked)
+            {
+                for(int i = 0; i < 4; i++)
+                {
+                    DateTime newDate = date.AddDays(7*(i+1));
+                    eventsDAO.AddEvent(title, description,newDate);
+                }
+            }
 
             if(action == "add")
             {
@@ -91,5 +104,7 @@ namespace CalendarApp
 
             this.Close();
         }
+
+      
     }
 }
