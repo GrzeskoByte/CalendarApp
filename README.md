@@ -1,4 +1,14 @@
 # CalendarApp
+
+[new]
+
+# Steps
+ - Enter CalendarApp.sln
+ - Open CalendarApp Properties in project tab
+ - Disable "Sign the ClickOnce_manifests" in signing page
+ - Run application
+
+
 !!! [Deprecated] !!!
 
 ## Instalation 
